@@ -1,0 +1,76 @@
+created:
+    - database/factories/CategoryFactory.php
+    - database/factories/TagFactory.php
+    - database/factories/SubCategoryFactory.php
+    - database/factories/SystemFactory.php
+    - database/factories/PaymentModuleFactory.php
+    - database/factories/SettingFactory.php
+    - database/factories/VendorFactory.php
+    - database/factories/ProductFactory.php
+    - database/factories/ProductTagFactory.php
+    - database/factories/ProductDimensionFactory.php
+    - database/factories/ProductWeightFactory.php
+    - database/factories/OrderFactory.php
+    - database/factories/OrderItemFactory.php
+    - database/factories/TransactionFactory.php
+    - database/factories/ReviewFactory.php
+    - database/factories/HomeCategoryFactory.php
+    - database/factories/SaleOnFactory.php
+    - database/factories/CouponFactory.php
+    - database/migrations/2024_09_12_103627_create_categories_table.php
+    - database/migrations/2024_09_12_103628_create_tags_table.php
+    - database/migrations/2024_09_12_103629_create_sub_categories_table.php
+    - database/migrations/2024_09_12_103630_create_systems_table.php
+    - database/migrations/2024_09_12_103631_create_payment_modules_table.php
+    - database/migrations/2024_09_12_103632_create_settings_table.php
+    - database/migrations/2024_09_12_103633_create_vendors_table.php
+    - database/migrations/2024_09_12_103634_create_products_table.php
+    - database/migrations/2024_09_12_103635_create_product_tags_table.php
+    - database/migrations/2024_09_12_103636_create_product_dimensions_table.php
+    - database/migrations/2024_09_12_103637_create_product_weights_table.php
+    - database/migrations/2024_09_12_103638_create_orders_table.php
+    - database/migrations/2024_09_12_103639_create_order_items_table.php
+    - database/migrations/2024_09_12_103640_create_transactions_table.php
+    - database/migrations/2024_09_12_103641_create_reviews_table.php
+    - database/migrations/2024_09_12_103642_create_home_categories_table.php
+    - database/migrations/2024_09_12_103643_create_sale_ons_table.php
+    - database/migrations/2024_09_12_103644_create_coupons_table.php
+    - app/Models/Category.php
+    - app/Models/Tag.php
+    - app/Models/SubCategory.php
+    - app/Models/System.php
+    - app/Models/PaymentModule.php
+    - app/Models/Setting.php
+    - app/Models/Vendor.php
+    - app/Models/Product.php
+    - app/Models/ProductTag.php
+    - app/Models/ProductDimension.php
+    - app/Models/ProductWeight.php
+    - app/Models/Order.php
+    - app/Models/OrderItem.php
+    - app/Models/Transaction.php
+    - app/Models/Review.php
+    - app/Models/HomeCategory.php
+    - app/Models/SaleOn.php
+    - app/Models/Coupon.php
+models:
+    StoreLocation: { name: string, slug: string, status: "string default:'active'", country_code: 'string nullable', city_code: 'string nullable' }
+    User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable', current_team_id: 'integer nullable', profile_photo_path: 'string nullable', two_factor_secret: 'text nullable', two_factor_recovery_codes: 'text nullable', two_factor_confirmed_at: 'datetime nullable' }
+    Category: { name: string, slug: 'string unique', logo: 'string nullable', status: 'enum:active,inactive', relationships: { hasMany: SubCategory } }
+    Tag: { name: string, slug: 'string unique', status: 'enum:active,inactive', relationships: { hasMany: Product } }
+    SubCategory: { category_id: 'id foreign:categories', name: string, slug: 'string unique', status: 'enum:active,inactive', relationships: { belongsTo: Category, hasMany: Product } }
+    System: { type: 'enum:single,multi' }
+    PaymentModule: { type: 'enum:cod,strip,jazzcash,easypaisa,whatsapp', status: 'enum:active,inactive', mode: 'enum:test,live', module_key: 'string nullable', module_secret: 'string nullable', merchent_id: 'string nullable', module_password: 'string nullable' }
+    Setting: { name: 'string nullable', logo: 'string nullable', email: 'string nullable', phone: 'string nullable', whatsapp: 'string nullable', fb: 'string nullable', insta: 'string nullable', address: 'text nullable', map: 'text nullable', country: 'string nullable' }
+    Vendor: { user_id: 'id foreign:users', business_name: 'string nullable', logo: 'string nullable', address: 'string nullable', fb: 'string nullable', insta: 'string nullable', whatsapp: 'string nullable', phone: 'string nullable', link: 'string nullable' }
+    Product: { vendor_id: 'id foreign:vendors nullable', sub_category_id: 'id foreign:sub_categories', name: string, slug: 'string unique', price: 'double:10,2 default(0)', sale_price: 'double:8,2 default(0)', qty: 'integer default(0)', sale_qty: 'integer default(0)', sku: 'string nullable', stock: 'enum:in,out', closure: 'string nullable', sole: 'string nullable', detail: 'text nullable', description: 'text nullable', status: 'enum:active,inactive', gallery: 'json nullable', relationships: { belongsTo: 'SubCategory, Vendor', hasMany: 'OrderItem, Review, Tag, ProductWeight, ProductDimension' } }
+    Order: { user_id: 'id foreign:users', total: 'double default(0)', subtotal: 'double default(0)', tax: 'double default(0)', discount: 'double default(0)', address: 'text nullable', city: 'string nullable', state: 'string nullable', status: 'enum:pending,process,dispatch,delivered,cancel', cancel_date: 'date nullable', relationships: { belongsTo: User, hasMany: OrderItem, hasOne: Transaction } }
+    OrderItem: { product_id: 'id foreign:products', order_id: 'id foreign:orders', qty: 'integer nullable', price: 'double default(0)', review: 'enum:1,0', relationships: { belongsTo: 'Product, Order' } }
+    Transaction: { order_id: 'id foreign:orders', status: 'enum:pending,paid,fail', payment_mode: 'enum:cod,card,online,whatsapp', relationships: { belongsTo: Order } }
+    Review: { product_id: 'id foreign:products', user_id: 'id foreign:users', rating: integer, comment: 'text nullable', status: 'enum:active,inactive', relationships: { belongsTo: 'Product, User' } }
+    HomeCategory: { category_id: 'id foreign:categories', status: 'enum:active,inactive', relationships: { belongsTo: Category } }
+    SaleOn: { product_id: 'id foreign:products', discount: double, type: 'enum:fixed,percentage', start_date: date, end_date: date, status: 'enum:active,inactive', relationships: { belongsTo: Product } }
+    Coupon: { vendor_id: 'id foreign:vendors nullable', code: string, discount: double, start_date: date, end_date: date, status: 'enum:active,inactive', relationships: { belongsTo: Vendor } }
+    ProductTag: { product_id: 'id foreign:products primary', tag_id: 'id foreign:tags primary', relationships: { belongsTo: 'Product, Tag' } }
+    ProductDimension: { product_id: 'id foreign:products', width: 'enum:sm,md,lg,xl,xxl', relationships: { belongsTo: Product } }
+    ProductWeight: { product_id: 'id foreign:products', weight: 'float:8,2 default(100)', type: "enum:g,kg default('g')", relationships: { belongsTo: Product } }

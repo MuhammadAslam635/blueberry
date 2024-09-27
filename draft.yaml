@@ -1,0 +1,166 @@
+models:
+  Category:
+    name: string
+    slug: string unique
+    logo: string nullable
+    status: enum:active,inactive
+    relationships:
+      hasMany: SubCategory
+
+  Tag:
+    name: string
+    slug: string unique
+    status: enum:active,inactive
+    relationships:
+      hasMany: Product
+
+  SubCategory:
+    category_id: id foreign:categories
+    name: string
+    slug: string unique
+    status: enum:active,inactive
+    relationships:
+      belongsTo: Category
+      hasMany: Product
+
+  System:
+    type: enum:single,multi
+
+  PaymentModule:
+    type: enum:cod,strip,jazzcash,easypaisa,whatsapp
+    status: enum:active,inactive
+    mode: enum:test,live
+    module_key: string nullable
+    module_secret: string nullable
+    merchent_id: string nullable
+    module_password: string nullable
+
+  Setting:
+    name: string nullable
+    logo: string nullable
+    email: string nullable
+    phone: string nullable
+    whatsapp: string nullable
+    fb: string nullable
+    insta: string nullable
+    address: text nullable
+    map: text nullable
+    country: string nullable
+
+  Vendor:
+    user_id: id foreign:users
+    business_name: string nullable
+    logo: string nullable
+    address: string nullable
+    fb: string nullable
+    insta: string nullable
+    whatsapp: string nullable
+    phone: string nullable
+    link: string nullable
+
+  Product:
+    vendor_id: id foreign:vendors nullable
+    sub_category_id: id foreign:sub_categories
+    name: string
+    slug: string unique
+    price: double:10,2 default(0)
+    sale_price: double:8,2 default(0)
+    qty: integer default(0)
+    sale_qty: integer default(0)
+    sku: string nullable
+    stock: enum:in,out
+    closure: string nullable
+    sole: string nullable
+    detail: text nullable
+    description: text nullable
+    status: enum:active,inactive
+    gallery: json nullable
+    relationships:
+      belongsTo: SubCategory, Vendor
+      hasMany: OrderItem, Review, Tag, ProductWeight, ProductDimension
+
+  ProductTag:
+    product_id: id foreign:products primary
+    tag_id: id foreign:tags primary
+    relationships:
+      belongsTo: Product, Tag
+
+  ProductDimension:
+    product_id: id foreign:products
+    width: enum:sm,md,lg,xl,xxl
+    relationships:
+      belongsTo: Product
+
+  ProductWeight:
+    product_id: id foreign:products
+    weight: float:8,2 default(100)
+    type: enum:g,kg default('g')
+    relationships:
+      belongsTo: Product
+
+  Order:
+    user_id: id foreign:users
+    total: double default(0)
+    subtotal: double default(0)
+    tax: double default(0)
+    discount: double default(0)
+    address: text nullable
+    city: string nullable
+    state: string nullable
+    status: enum:pending,process,dispatch,delivered,cancel
+    cancel_date: date nullable
+    relationships:
+      belongsTo: User
+      hasMany: OrderItem
+      hasOne: Transaction
+
+  OrderItem:
+    product_id: id foreign:products
+    order_id: id foreign:orders
+    qty: integer nullable
+    price: double default(0)
+    review: enum:1,0
+    relationships:
+      belongsTo: Product, Order
+
+  Transaction:
+    order_id: id foreign:orders
+    status: enum:pending,paid,fail
+    payment_mode: enum:cod,card,online,whatsapp
+    relationships:
+      belongsTo: Order
+
+  Review:
+    product_id: id foreign:products
+    user_id: id foreign:users
+    rating: integer
+    comment: text nullable
+    status: enum:active,inactive
+    relationships:
+      belongsTo: Product, User
+
+  HomeCategory:
+    category_id: id foreign:categories
+    status: enum:active,inactive
+    relationships:
+      belongsTo: Category
+
+  SaleOn:
+    product_id: id foreign:products
+    discount: double
+    type: enum:fixed,percentage
+    start_date: date
+    end_date: date
+    status: enum:active,inactive
+    relationships:
+      belongsTo: Product
+
+  Coupon:
+    vendor_id: id foreign:vendors nullable
+    code: string
+    discount: double
+    start_date: date
+    end_date: date
+    status: enum:active,inactive
+    relationships:
+      belongsTo: Vendor
