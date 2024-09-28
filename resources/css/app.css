@@ -5,3 +5,9 @@
 [x-cloak] {
     display: none;
 }
+.btn-primary{
+    background-color: darkslateblue;
+}
+.hover:btn-primary{
+    background-color: #d89a86;
+}

@@ -4,6 +4,7 @@ use App\Http\Middleware\GeoLocationMiddleware;
 use App\Livewire\Admin\Banner\BannerComponent;
 use App\Livewire\Admin\Banner\CreateBannerComponent;
 use App\Livewire\Admin\Banner\UpdateBannerComponent;
+use App\Livewire\Admin\Category\Categoriescomponent;
 use App\Livewire\Web\Pages\Category\CategoryProductComponent;
 use App\Livewire\Web\Pages\CategoryComponent;
 use App\Livewire\Web\Pages\HomeComponent;
@@ -21,7 +22,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('admin/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
     Route::prefix('admin')->group(function () {
@@ -29,6 +30,9 @@ Route::middleware([
             Route::get('/', BannerComponent::class)->name('admin_banner')->middleware('can:viewAny,App\Models\Banner');
             Route::get('/create', CreateBannerComponent::class)->name('createBanner')->middleware('can:create,App\Models\Banner');
             Route::get('/edit/{banner}', UpdateBannerComponent::class)->name('updateBanner')->middleware('can:update,App\Models\Banner');
+        });
+        Route::prefix('categories')->group(function () {
+            Route::get('/',Categoriescomponent::class)->name('admin_categories');
         });
     });
 });

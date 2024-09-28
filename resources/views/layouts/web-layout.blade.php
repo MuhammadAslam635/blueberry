@@ -703,10 +703,11 @@
     <script src="{{ asset('assets/js/vendor/jquery-range-ui.min.js') }}"></script>
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <x-mary-toast />
     @livewireScripts
     @stack('modals')
     @stack('js')
-    <x-mary-toast />
 </body>
 
 

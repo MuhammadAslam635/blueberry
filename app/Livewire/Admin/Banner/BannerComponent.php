@@ -36,6 +36,7 @@ class BannerComponent extends Component
     public $status;
 
     public $url;
+    public $search;
 
     public function openModal($id)
     {
@@ -99,10 +100,21 @@ class BannerComponent extends Component
 
         }
     }
+    public function deleteSelectedBanner(){
+        foreach ($this->bannerIds as $bannerId) {
+            // Assuming you have a Banner model
+            $banner = Banner::find($bannerId);
+            if ($banner) {
+                $banner->delete();
+            }
+        }
+        // Optional: Reset the bannerIds property
+        $this->bannerIds = [];
+    }
 
     public function render()
     {
-        $banners = Banner::paginate(10);
+        $banners = Banner::where('title','like','%'.$this->search.'%')->paginate(10);
 
         return view('livewire.admin.banner.banner-component', get_defined_vars());
     }
