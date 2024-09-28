@@ -26,5 +26,16 @@
                     class="{{ request()->is('admin/banner/create') ? 'active' : '' }}" link="{{ route('createBanner') }}" />
             </x-mary-menu-sub>
         @endcan
+        @can('viewAny', App\Models\Category::class)
+            <x-mary-menu-sub title="Catgeory Section" icon="o-tag"
+                class="{{ request()->is('admin/categories*') ? 'active' : '' }}">
+                <x-mary-menu-item title="Categories" icon="o-numbered-list"  link="{{ route('admin_categories') }}"
+                    class="{{ request()->is('admin/categories') ? 'active' : '' }}" />
+                @can('create',App\Models\Category::class)
+                <x-mary-menu-item title="Add Category" icon="o-plus"
+                    class="{{ request()->is('admin/categories/create') ? 'active' : '' }}" link="{{ route('createCategory') }}" />
+                    @endcan
+            </x-mary-menu-sub>
+        @endcan
     </x-mary-menu>
 </x-slot:sidebar>

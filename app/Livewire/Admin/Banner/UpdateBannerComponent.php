@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Banner;
 
-use App\helper\ErrorLog;
+use App\Helper\ErrorLogHelperg;
 use App\Models\Banner;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;

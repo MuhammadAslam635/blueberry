@@ -5,6 +5,7 @@ use App\Livewire\Admin\Banner\BannerComponent;
 use App\Livewire\Admin\Banner\CreateBannerComponent;
 use App\Livewire\Admin\Banner\UpdateBannerComponent;
 use App\Livewire\Admin\Category\Categoriescomponent;
+use App\Livewire\Admin\Category\CreateCategoryComponent;
 use App\Livewire\Web\Pages\Category\CategoryProductComponent;
 use App\Livewire\Web\Pages\CategoryComponent;
 use App\Livewire\Web\Pages\HomeComponent;
@@ -32,7 +33,8 @@ Route::middleware([
             Route::get('/edit/{banner}', UpdateBannerComponent::class)->name('updateBanner')->middleware('can:update,App\Models\Banner');
         });
         Route::prefix('categories')->group(function () {
-            Route::get('/',Categoriescomponent::class)->name('admin_categories');
+            Route::get('/',Categoriescomponent::class)->name('admin_categories')->middleware('can:viewAny,App\Models\Category');
+            Route::get('/create',CreateCategoryComponent::class)->name('createCategory')->middleware('can:create,App\Models\Category');
         });
     });
 });
