@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Category;
+use App\Models\Tag;
 use App\Models\User;
 
-class CategoryPolicy
+class TagPolicy
 {
     public function viewAny(User $user): bool
     {
@@ -17,7 +17,7 @@ class CategoryPolicy
         return $user->isAdmin() || $user->isSuper();
     }
 
-    public function delete(User $user, Category $catgeory): bool
+    public function delete(User $user, Tag $tag): bool
     {
         return $user->isAdmin() || $user->isSuper();
     }

@@ -51,4 +51,6 @@ return [
     'blog' => 'Blog',
     'offers' => 'Offers',
     'items' => 'Items',
+    'dashboard'=>'Dashboard',
+    'admin'=>'Admin'
 ];

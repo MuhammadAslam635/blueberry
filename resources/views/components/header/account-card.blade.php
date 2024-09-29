@@ -24,7 +24,7 @@
                     class="py-[1px] px-[15px] m-[0] font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">
                     <x-mary-button
                         class="dropdown-item transition-all btn-link no-underline hover:no-underline duration-[0.3s] ease-in-out font-Poppins text-[13px] hover:text-[#6c7fd8] leading-[22px] w-full font-normal tracking-[0.03rem]"
-                        link="{{ route('register') }}" wire:navigate>{{ __('locale.dashboard') }}</x-mary-button>
+                        link="{{ route('dashboard') }}" wire:navigate>{{ __('locale.dashboard') }}</x-mary-button>
                 </li>
                 <li
                     class="py-[1px] px-[15px] m-[0] font-Poppins text-[15px] text-[#686e7d] font-light leading-[28px] tracking-[0.03rem]">

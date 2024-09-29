@@ -1,4 +1,4 @@
-<x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-200">
+<x-slot:sidebar drawer="main-drawer" collapsible class="bg-fuchsia-800">
 
     {{-- User --}}
     @if ($user = auth()->user())
@@ -29,12 +29,25 @@
         @can('viewAny', App\Models\Category::class)
             <x-mary-menu-sub title="Catgeory Section" icon="o-tag"
                 class="{{ request()->is('admin/categories*') ? 'active' : '' }}">
-                <x-mary-menu-item title="Categories" icon="o-numbered-list"  link="{{ route('admin_categories') }}"
+                <x-mary-menu-item title="Categories" icon="o-numbered-list" link="{{ route('admin_categories') }}"
                     class="{{ request()->is('admin/categories') ? 'active' : '' }}" />
-                @can('create',App\Models\Category::class)
-                <x-mary-menu-item title="Add Category" icon="o-plus"
-                    class="{{ request()->is('admin/categories/create') ? 'active' : '' }}" link="{{ route('createCategory') }}" />
-                    @endcan
+                @can('create', App\Models\Category::class)
+                    <x-mary-menu-item title="Add Category" icon="o-plus"
+                        class="{{ request()->is('admin/categories/create') ? 'active' : '' }}"
+                        link="{{ route('createCategory') }}" />
+                @endcan
+            </x-mary-menu-sub>
+        @endcan
+        @can('viewAny', App\Models\Tag::class)
+            <x-mary-menu-sub title="Tag Section" icon="o-ticket"
+                class="{{ request()->is('admin/tags*') ? 'active' : '' }}">
+                <x-mary-menu-item title="Categories" icon="o-tag" link="{{ route('admin_tags') }}"
+                    class="{{ request()->is('admin/tags') ? 'active' : '' }}" />
+                @can('create', App\Models\Category::class)
+                    <x-mary-menu-item title="Add Category" icon="o-plus"
+                        class="{{ request()->is('admin/categories/create') ? 'active' : '' }}"
+                        link="{{ route('createCategory') }}" />
+                @endcan
             </x-mary-menu-sub>
         @endcan
     </x-mary-menu>

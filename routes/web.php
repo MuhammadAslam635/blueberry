@@ -6,6 +6,8 @@ use App\Livewire\Admin\Banner\CreateBannerComponent;
 use App\Livewire\Admin\Banner\UpdateBannerComponent;
 use App\Livewire\Admin\Category\Categoriescomponent;
 use App\Livewire\Admin\Category\CreateCategoryComponent;
+use App\Livewire\Admin\Category\EditCategoryComponent;
+use App\Livewire\Admin\Tags\TagsComponent;
 use App\Livewire\Web\Pages\Category\CategoryProductComponent;
 use App\Livewire\Web\Pages\CategoryComponent;
 use App\Livewire\Web\Pages\HomeComponent;
@@ -35,6 +37,10 @@ Route::middleware([
         Route::prefix('categories')->group(function () {
             Route::get('/',Categoriescomponent::class)->name('admin_categories')->middleware('can:viewAny,App\Models\Category');
             Route::get('/create',CreateCategoryComponent::class)->name('createCategory')->middleware('can:create,App\Models\Category');
+            Route::get('/edit/{id}', EditCategoryComponent::class)->name('updateCategory')->middleware('can:update,App\Models\Category');
+        });
+        Route::prefix('tags')->group(function(){
+            Route::get('/',TagsComponent::class)->name('admin_tags')->middleware('can:viewAny,App\Models\Tag');
         });
     });
 });
