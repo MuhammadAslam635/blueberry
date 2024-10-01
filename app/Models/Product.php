@@ -33,6 +33,7 @@ class Product extends Model
         'description',
         'status',
         'gallery',
+        'image'
     ];
 
     /**

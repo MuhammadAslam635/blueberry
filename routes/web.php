@@ -7,6 +7,11 @@ use App\Livewire\Admin\Banner\UpdateBannerComponent;
 use App\Livewire\Admin\Category\Categoriescomponent;
 use App\Livewire\Admin\Category\CreateCategoryComponent;
 use App\Livewire\Admin\Category\EditCategoryComponent;
+use App\Livewire\Admin\Category\Sub\EditSubCategoryComponent;
+use App\Livewire\Admin\Category\Sub\SubCategoryComponent;
+use App\Livewire\Admin\Products\CreateProductComponent;
+use App\Livewire\Admin\Products\EditProductComponent;
+use App\Livewire\Admin\Products\ProductsComponent;
 use App\Livewire\Admin\Tags\TagsComponent;
 use App\Livewire\Web\Pages\Category\CategoryProductComponent;
 use App\Livewire\Web\Pages\CategoryComponent;
@@ -41,6 +46,15 @@ Route::middleware([
         });
         Route::prefix('tags')->group(function(){
             Route::get('/',TagsComponent::class)->name('admin_tags')->middleware('can:viewAny,App\Models\Tag');
+        });
+        Route::prefix('/sub-categories')->group(function(){
+            Route::get('/',SubCategoryComponent::class)->name('admin_sub_categories')->middleware('can:viewAny,App\Models\SubCategory');
+            Route::get('/{id}/update',EditSubCategoryComponent::class)->name('updateSubCategory')->middleware('can:update,App\Models\SubCategory');
+        });
+        Route::prefix('products')->group(function(){
+            Route::get('/',ProductsComponent::class)->name('admin_products')->middleware('can:viewAny,App\Models\Product');
+            Route::get('/create',CreateProductComponent::class)->name('createProduct')->middleware('can:create,App\Models\Product');
+            Route::get('/{id}/edit',EditProductComponent::class)->name('editProduct')->middleware('can:update,App\Models\Product');
         });
     });
 });

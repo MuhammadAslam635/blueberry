@@ -1,5 +1,5 @@
-import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
+import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 import flatpickr from "flatpickr";
 
 // import TomSelect from "tom-select";
@@ -17,6 +17,5 @@ clipboard.on('success', function(e) {
 });
 
 
-import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 
-Livewire.start();
+

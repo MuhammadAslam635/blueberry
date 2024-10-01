@@ -22,7 +22,7 @@ return new class extends Migration
             $table->double('price', 10, 2);
             $table->double('sale_price', 8, 2);
             $table->integer('qty');
-            $table->integer('sale_qty');
+            $table->integer('sale_qty')->default(0);
             $table->string('sku')->nullable();
             $table->enum('stock', ["in","out"]);
             $table->string('closure')->nullable();

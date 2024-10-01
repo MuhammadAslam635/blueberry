@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        // StoreLocation::factory(5)->create();
+      //  StoreLocation::factory(5)->create();
         // Category::factory()->create([
         //     'name' => 'Dairy & Milk',
         //     'slug' => Str::slug('Dairy & Milk'),
@@ -205,11 +205,11 @@ class DatabaseSeeder extends Seeder
         // Product::factory(24)->create();
         // ProductDimension::factory(50)->create();
         // ProductWeight::factory(50)->create();
-        // ProductTag::factory(30)->create();
-        //PaymentModule::factory(4)->create();
-        // Order::factory(30)->create();
-        //OrderItem::factory(50)->create();
-        //Transaction::factory(30)->create();
+        //ProductTag::factory(30)->create();
+       // PaymentModule::factory(4)->create();
+       // Order::factory(30)->create();
+       // OrderItem::factory(50)->create();
+       // Transaction::factory(30)->create();
         // System::factory(1)->create();
         // HomeCategory::factory(1)->create();
         // SaleOn::factory(1)->create();

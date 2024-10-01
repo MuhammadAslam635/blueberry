@@ -1,4 +1,4 @@
-<x-slot:sidebar drawer="main-drawer" collapsible class="bg-fuchsia-800">
+<x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100">
 
     {{-- User --}}
     @if ($user = auth()->user())
@@ -38,17 +38,18 @@
                 @endcan
             </x-mary-menu-sub>
         @endcan
+        @can('viewAny',App\Models\SubCategory::class)
+        <x-mary-menu-item title="SubCatgeories" icon="o-rectangle-group" link="{{ route('admin_sub_categories') }}"
+        class="{{ request()->is('admin/sub-categories') ? 'active' : '' }}" />
+        @endif
         @can('viewAny', App\Models\Tag::class)
-            <x-mary-menu-sub title="Tag Section" icon="o-ticket"
-                class="{{ request()->is('admin/tags*') ? 'active' : '' }}">
-                <x-mary-menu-item title="Categories" icon="o-tag" link="{{ route('admin_tags') }}"
-                    class="{{ request()->is('admin/tags') ? 'active' : '' }}" />
-                @can('create', App\Models\Category::class)
-                    <x-mary-menu-item title="Add Category" icon="o-plus"
-                        class="{{ request()->is('admin/categories/create') ? 'active' : '' }}"
-                        link="{{ route('createCategory') }}" />
-                @endcan
-            </x-mary-menu-sub>
+        <x-mary-menu-item title="Tags" icon="o-tag" link="{{ route('admin_tags') }}"
+        class="{{ request()->is('admin/tags') ? 'active' : '' }}" />
         @endcan
+        @can('viewAny',App\Models\Product::class)
+        <x-mary-menu-item title="Products" icon="o-building-storefront" link="{{ route('admin_products') }}"
+        class="{{ request()->is('admin/products') ? 'active' : '' }}" />
+        @endcan
+
     </x-mary-menu>
 </x-slot:sidebar>

@@ -10,11 +10,6 @@ class SystemPolicy
     public function type()
     {
         $type = System::first()->type;
-        Log::info('system', $type);
-        Log::debug('system', $type);
-
-        dd($type);
-
         return $type;
     }
 }

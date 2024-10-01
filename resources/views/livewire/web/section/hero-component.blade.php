@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                             @empty
-                                <div class="swiper-slide slide-{{ $banner->id }}">
+                                <div class="swiper-slide slide-1">
                                     <div class="flex flex-wrap w-full mb-[-24px]">
                                         <div
                                             class="min-[992px]:w-[50%] w-full px-[12px] min-[992px]:order-1 order-2 mb-[24px]">

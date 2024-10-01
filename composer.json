@@ -6,15 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "filament/forms": "^3.2",
         "hardevine/shoppingcart": "^3.3",
         "laravel/framework": "^11.9",
         "laravel/jetstream": "^5.2",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
+        "livewire/volt": "^1.6",
         "openspout/openspout": "^4.26",
-        "power-components/livewire-powergrid": "^5.10",
-        "robsontenorio/mary": "^1.35"
+        "power-components/livewire-powergrid": "^6.x-dev",
+        "robsontenorio/mary": "^1.40"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
@@ -41,7 +43,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
