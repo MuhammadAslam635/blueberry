@@ -207,10 +207,15 @@ final class ProductTable extends PowerGridComponent
         ];
     }
 
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
+    #[\Livewire\Attributes\On('detProduct')]
+    public function detProduct($rowId): void
     {
-        $this->js('alert('.$rowId.')');
+        redirect()->route('detailProduct',['id'=>$rowId]);
+    }
+    #[\Livewire\Attributes\On('editProduct')]
+    public function editProduct($rowId): void
+    {
+        redirect()->route('editProduct',['id'=>$rowId]);
     }
     #[\Livewire\Attributes\On('updateStock')]
     public function updateStock($id): void
@@ -240,25 +245,38 @@ final class ProductTable extends PowerGridComponent
             $this->error('Please Check error Logs');
         }
     }
+    #[\Livewire\Attributes\On('delete')]
+    public function delete($rowId):void{
+        try{
+            $product = Product::find($rowId);
+            $product->delete();
+            $this->success('deleted successfully');
+        }catch(\Exception $e){
+            (new ErrorLogHelper)('Delete Product',$e->getMessage());
+            $this->error('Please check error logs');
+        }
+    }
 
     public function actions(Product $row): array
     {
         return [
-            Button::add('detail')
+            Button::add('detProduct')
                 ->slot('Detail')
                 ->id()
                 ->class('text-green-600 btn btn-sm')
-                ->dispatch('edit', ['rowId' => $row->id]),
-                Button::add('edit')
+                ->dispatch('detProduct', ['rowId' => $row->id])->can('view',Product::class),
+                Button::add('editProduct')
                 ->slot('Edit')
                 ->id()
                 ->class('text-primary btn btn-sm')
-                ->dispatch('edit', ['rowId' => $row->id]),
+                ->dispatch('editProduct', ['rowId' => $row->id])->can('update',Product::class),
                 Button::add('delete')
                 ->slot('Delete')
                 ->id()
                 ->class('text-red-800 btn btn-sm')
-                ->dispatch('edit', ['rowId' => $row->id]),
+                ->dispatch('delete', ['rowId' => $row->id])
+                ->confirm('Are You sure you want to delete this product')
+                ->can('delete',Product::class),
         ];
     }
 

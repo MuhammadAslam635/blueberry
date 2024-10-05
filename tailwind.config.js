@@ -12,7 +12,6 @@ export default {
         "./vendor/robsontenorio/mary/src/View/Components/**/*.php",
         './app/Filament/**/*.php',
         './vendor/filament/**/*.blade.php',
-
         './resources/**/*.js',
         './app/Livewire/**/*Table.php',
         './app/Helpers/PowerGridThemes/*.php',
@@ -36,4 +35,7 @@ export default {
 		typography,
 		require("daisyui")
 	],
+    daisyui: {
+        themes: ["emerald"],
+      },
 }

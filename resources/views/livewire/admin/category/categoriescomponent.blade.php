@@ -1,13 +1,12 @@
 <div>
-    <x-mary-header title="Category Section" subtitle="All Categories Table">
+    <div class="flex justify-between py-3">
+        <h1 class="font-bold text-primary text-md">Category Section</h1>
+        <x-mary-button label="Create Category" link="{{ route('createCategory') }}" class="btn btn-sm text-primary" />
+    </div>
+    <div class="overflow-x-scroll">
 
-        <x-slot:actions>
-            <x-mary-button icon="o-plus" link="{{ route('createCategory') }}"
-                class="btn btn-sm btn-primary hover:bg-[#d89a86] border-none text-success" label="Create New Category" />
-        </x-slot:actions>
-    </x-mary-header>
-
-    @livewire('table.category-table')
+        @livewire('table.category-table')
+    </div>
 
 
 

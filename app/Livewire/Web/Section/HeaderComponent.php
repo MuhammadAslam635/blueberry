@@ -32,9 +32,6 @@ class HeaderComponent extends Component
 
         // Update the currency rate
         Curreny::where('symbol', $code)->first()->symbol;
-
-        // Log the currency code, if needed
-        Log::info('currency', [$code]);
     }
 
     public function render()

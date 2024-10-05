@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Table;
 
+use App\helper\ErrorLogHelper;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\On;
+use Mary\Traits\Toast;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Components\SetUp\Exportable;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
-use PowerComponents\LivewirePowerGrid\Footer;
-use PowerComponents\LivewirePowerGrid\Header;
-use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
@@ -19,17 +20,21 @@ use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 final class UserTable extends PowerGridComponent
 {
     use WithExport;
+    use Toast;
+    public string $tableName = 'UserTable';
+    protected $listeners = ['refreshComponent'=>'pg:eventRefresh-UserTable'];
 
     public function setUp(): array
     {
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
-            Footer::make()
+            PowerGrid::exportable(fileName: 'my-export-file')
+            ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+                PowerGrid::header()
+                 ->showToggleColumns()
+                ->showSearchInput(),
+            PowerGrid::footer()
                 ->showPerPage()
                 ->showRecordCount(),
         ];
@@ -51,8 +56,11 @@ final class UserTable extends PowerGridComponent
             ->add('id')
             ->add('name')
             ->add('email')
-            ->add('utype')
-            ->add('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->add('utype',function(User $model){
+                $type = $model->utype == 'adm' ? 'Admin' : ($model->utype == 'sup' ? 'SuperAdmin' : ($model->utype == 'ven' ? 'Vendor' : ($model->utype == 'blo' ? 'Blogger' : 'User ')));
+                return '<span class="btn btn-sm">'.$type.'</span>';
+            })
+            ->add('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->isoFormat('M-dd-Y'));
     }
 
     public function columns(): array
@@ -81,6 +89,8 @@ final class UserTable extends PowerGridComponent
     public function filters(): array
     {
         return [
+            Filter::inputText('name')->placeholder('User Name...'),
+            Filter::inputText('email')->placeholder('Email...'),
             Filter::datetimepicker('created_at'),
         ];
     }
@@ -88,17 +98,38 @@ final class UserTable extends PowerGridComponent
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
-        $this->js('alert('.$rowId.')');
+        redirect()->route('updateUser',['id'=>$rowId]);
     }
-
+    #[\Livewire\Attributes\On('delete')]
+    public function delete($rowId):void{
+        try{
+            $user = User::find($rowId);
+            $user->delete();
+            $this->success('deleted successfully');
+        }catch(\Exception $e){
+            (new ErrorLogHelper)('Delete User',$e->getMessage());
+            $this->error('Please check error logs');
+        }
+    }
     public function actions(User $row): array
     {
         return [
+            Button::add('Profile')
+            ->slot('profile')
+            ->id()
+            ->class('btn btn-sm text-primary')
+            ->dispatch('edit',['rowId'=>$row->id]),
             Button::add('edit')
-                ->slot('Edit: '.$row->id)
+                ->slot('Edit')
                 ->id()
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id])
+                ->class('btn btn-sm text-primary')
+                ->dispatch('edit', ['rowId' => $row->id]),
+                Button::add('Delete')
+            ->slot('delete')
+            ->id()
+            ->class('btn btn-sm text-red-600')
+            ->dispatch('delete',['rowId'=>$row->id])->can('delete',User::class),
+
         ];
     }
 

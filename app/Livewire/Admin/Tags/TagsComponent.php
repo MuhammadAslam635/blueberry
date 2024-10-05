@@ -8,7 +8,6 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Mary\Traits\Toast;
 use Illuminate\Support\Str;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 
 class TagsComponent extends Component

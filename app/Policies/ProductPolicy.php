@@ -27,4 +27,8 @@ class ProductPolicy
 
         return (bool) $user->isAdmin() || $user->isSuper() == true;
     }
+    public function view(User $user): bool
+    {
+        return $user->isAdmin() || $user->isSuper();
+    }
 }

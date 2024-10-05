@@ -55,9 +55,4 @@ body {
 .about-example a:hover {
     color: #FBBF24;
 }
-.btn-primary{
-    background-color: darkslateblue;
-}
-.hover:btn-primary{
-    background-color: #d89a86;
-}
+

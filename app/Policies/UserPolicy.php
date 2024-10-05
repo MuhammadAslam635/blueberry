@@ -16,7 +16,7 @@ class UserPolicy
         return $user->isAdmin() || $user->isSuper();
     }
 
-    public function edit(User $user): bool
+    public function update(User $user): bool
     {
         return $user->isAdmin() || $user->isSuper();
     }

@@ -9,11 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Mary\Traits\Toast;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Components\SetUp\Exportable;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
-use PowerComponents\LivewirePowerGrid\Footer;
-use PowerComponents\LivewirePowerGrid\Header;
-use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
@@ -22,17 +20,19 @@ final class CategoryTable extends PowerGridComponent
 {
     use WithExport;
     use Toast;
+    public string $tableName = 'category-table-zqb9y7-table';
 
     public function setUp(): array
     {
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
-            Footer::make()
+            PowerGrid::exportable(fileName: 'my-export-file')
+            ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+                PowerGrid::header()
+                 ->showToggleColumns()
+                ->showSearchInput(),
+            PowerGrid::footer()
                 ->showPerPage()
                 ->showRecordCount(),
         ];
@@ -62,7 +62,7 @@ final class CategoryTable extends PowerGridComponent
             ->add('slug')
 
             ->add('status')
-            ->add('created_at_formatted', fn (Category $model) => Carbon::parse($model->created_at)->isoFormat('MM Do YYYY h:m:s'));
+            ->add('created_at_formatted', fn (Category $model) => Carbon::parse($model->created_at)->isoFormat('M-dd-Y'));
     }
 
     public function columns(): array
@@ -114,16 +114,16 @@ final class CategoryTable extends PowerGridComponent
     {
         return [
             Button::add('edit')
-                ->slot('<x-mary-icon name="o-pencil-square" class="text-primary" />')
+                ->slot('Edit')
                 ->route('updateCategory', ['id' => $row->id])->can('update',Category::class)
-                ->tooltip('Edit Category'),
+                ->class('btn btn-sm text-primary'),
                 Button::add('delete')
-                ->slot('<x-mary-icon name="o-trash" class="text-red-700" />')
+                ->slot('Delete')
                 ->id()
                 ->confirm('Are you sure you want to Delete?')
                 ->dispatch('delete', ['rowId' => $row->id])
                 ->can('delete',Category::class)
-                ->tooltip('Delete Category'),
+                ->class('btn btn-sm text-accent'),
         ];
     }
 

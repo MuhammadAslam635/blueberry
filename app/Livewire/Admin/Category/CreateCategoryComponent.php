@@ -43,6 +43,7 @@ class CreateCategoryComponent extends Component
                 $cat->logo = $image;
             }
             $cat->save(); // Intentional error
+            $this->dispatch('pg:eventRefresh-category-table-zqb9y7-table');
             $this->reset();
             $this->success('category created');
         } catch (\Exception $e) {

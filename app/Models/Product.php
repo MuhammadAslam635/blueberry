@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Product extends Model
 {
@@ -64,15 +66,18 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    public function productOrders():BelongsToMany {
+        return $this->belongsToMany(Order::class, 'order_items', 'product_id', 'order_id');
+    }
 
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
 
-    public function tags(): HasMany
+    public function productTags(): HasMany
     {
-        return $this->hasMany(Tag::class);
+        return $this->hasMany(ProductTag::class);
     }
 
     public function productWeights(): HasMany

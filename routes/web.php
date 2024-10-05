@@ -9,10 +9,15 @@ use App\Livewire\Admin\Category\CreateCategoryComponent;
 use App\Livewire\Admin\Category\EditCategoryComponent;
 use App\Livewire\Admin\Category\Sub\EditSubCategoryComponent;
 use App\Livewire\Admin\Category\Sub\SubCategoryComponent;
+use App\Livewire\Admin\Orders\OrdersComponent;
 use App\Livewire\Admin\Products\CreateProductComponent;
+use App\Livewire\Admin\Products\DetailProductComponent ;
 use App\Livewire\Admin\Products\EditProductComponent;
 use App\Livewire\Admin\Products\ProductsComponent;
 use App\Livewire\Admin\Tags\TagsComponent;
+use App\Livewire\Admin\Users\CreateUserComponent;
+use App\Livewire\Admin\Users\EditUserComponent;
+use App\Livewire\Admin\Users\UsersComponent;
 use App\Livewire\Web\Pages\Category\CategoryProductComponent;
 use App\Livewire\Web\Pages\CategoryComponent;
 use App\Livewire\Web\Pages\HomeComponent;
@@ -30,10 +35,10 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('admin/dashboard', function () {
+    Route::get('management/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::prefix('admin')->group(function () {
+    Route::prefix('management')->group(function () {
         Route::prefix('banner')->group(function () {
             Route::get('/', BannerComponent::class)->name('admin_banner')->middleware('can:viewAny,App\Models\Banner');
             Route::get('/create', CreateBannerComponent::class)->name('createBanner')->middleware('can:create,App\Models\Banner');
@@ -55,6 +60,15 @@ Route::middleware([
             Route::get('/',ProductsComponent::class)->name('admin_products')->middleware('can:viewAny,App\Models\Product');
             Route::get('/create',CreateProductComponent::class)->name('createProduct')->middleware('can:create,App\Models\Product');
             Route::get('/{id}/edit',EditProductComponent::class)->name('editProduct')->middleware('can:update,App\Models\Product');
+            Route::get('/{id}/detail',DetailProductComponent::class)->name('product-detail')->middleware('can:view,App\Models\Product');
+        });
+        Route::prefix('users')->group(function(){
+            Route::get('/',UsersComponent::class)->name('admin_users')->middleware('can:viewAny,App\Models\User');
+            Route::get('/create',CreateUserComponent::class)->name('createUser')->middleware('can:create,App\Models\User');
+            Route::get('/{id}/user',EditUserComponent::class)->name('updateUser')->middleware('can:update,App\Models\User');
+        });
+        Route::prefix('orders')->group(function(){
+             Route::get('/',OrdersComponent::class)->name('admin_orders')->middleware('can:viewAny,App\Models\Order');
         });
     });
 });
