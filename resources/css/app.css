@@ -1,58 +1,9 @@
 
 @import "../../vendor/power-components/livewire-powergrid/dist/tailwind.css";
 @import "flatpickr/dist/flatpickr.min.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-    font-family: 'Nunito', sans-serif;
-    overflow: hidden;
-}
 
-[x-cloak] {
-    display: none !important;
-}
-
-
-::-webkit-scrollbar {
-    width: 11px;
-    height: 11px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgb(203, 206, 210);
-    border: 3px solid transparent;
-    background-clip: content-box;
-}
-
-::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #9d9a9a;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-    background-color: rgb(112, 123, 136);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(132, 141, 152);
-}
-
-.dark ::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-
-.about-example a:link, .about-example a:visited {
-    color: #D97706;
-    text-decoration: underline;
-}
-
-.about-example a:hover {
-    color: #FBBF24;
-}
 

@@ -24,7 +24,7 @@ use App\Policies\TagPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\View;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -40,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $type = System::first()->type;
+        View::share('system_type', $type);
         $this->registerPolicies();
 
     }
