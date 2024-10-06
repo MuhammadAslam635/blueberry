@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('qty')->nullable();
             $table->double('price');
             $table->enum('review', ["1","0"]);
+            $table->softDeletes();
             $table->timestamps();
         });
 

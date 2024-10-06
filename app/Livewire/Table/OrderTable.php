@@ -2,18 +2,24 @@
 
 namespace App\Livewire\table;
 
+use App\helper\ErrorLogHelper;
 use App\Models\Order;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Components\SetUp\Exportable;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use Illuminate\View\View;
+use Livewire\Attributes\On;
+use Mary\Traits\Toast;
 
 final class OrderTable extends PowerGridComponent
 {
+    use Toast;
     public string $tableName = 'order-table-fxojpl-table';
 
     public function setUp(): array
@@ -21,8 +27,11 @@ final class OrderTable extends PowerGridComponent
         $this->showCheckBox();
 
         return [
+            PowerGrid::exportable(fileName: 'my-export-file')
+            ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             PowerGrid::header()
-                ->showSearchInput(),
+                ->showSearchInput()
+                ->showToggleColumns(),
             PowerGrid::footer()
                 ->showPerPage()
                 ->showRecordCount(),
@@ -31,15 +40,13 @@ final class OrderTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Order::query()->with(['user','orderItems','transaction']);
+        return Order::query();
     }
 
     public function relationSearch(): array
     {
         return [
-            'user'=>[
-                'name'
-            ]
+
         ];
     }
 
@@ -47,15 +54,18 @@ final class OrderTable extends PowerGridComponent
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('user_id',fn(Order $order)=>e($order->user->name ?? 'N/A'))
-            ->add('status', function ($order) {
-                $status = $order->status;
-
-                return "<span class='".($status == 'pending' ? 'text-accent' : ($status == 'process' ? 'text-secondary': ($status =='dispatch'?'text-primary':($status =='delivered'?'text-green-600':'text-red-600'))))." btn btn-sm capitalize' >$status</span>";
+            ->add('user',function(Order $order){
+                $user = $order->user->name;
+               // dump($user);
+                return "<span>".$user."</span>";
             })
+            ->add('status')
             ->add('total')
             ->add('subtotal')
-            ->add('tax')
+            ->add('payment_mode',function(Order $order){
+                $mode = $order->transaction->payment_mode ?? 'N/A';
+                return "<span class='".($mode == 'jazzcash' ? 'text-accent' : ($mode == 'cod' ? 'text-secondary': ($mode =='online'?'text-primary':($mode =='card'?'text-green-600':'text-red-600'))))." btn btn-sm capitalize' >$mode</span>";
+            })
             ->add('discount')
             ->add('address')
             ->add('city')
@@ -68,7 +78,7 @@ final class OrderTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id'),
-            Column::make('User', 'user_id'),
+            Column::make('User', 'user'),
             Column::make('Status', 'status')
                 ->sortable()
                 ->searchable(),
@@ -80,7 +90,7 @@ final class OrderTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Tax', 'tax')
+            Column::make('Payment Method', 'payment_mode')
                 ->sortable()
                 ->searchable(),
 
@@ -101,10 +111,9 @@ final class OrderTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-
-
-            Column::make('Cancel date', 'cancel_date_formatted', 'cancel_date')
-                ->sortable(),
+            Column::make('Cancel Date', 'cancel_date_formatted', 'cancel_date')
+                ->sortable()
+                ->hidden(true,false),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable(),
@@ -126,18 +135,48 @@ final class OrderTable extends PowerGridComponent
     {
         $this->js('alert('.$rowId.')');
     }
+    #[\Livewire\Attributes\On('detail')]
+    public function detail($rowId): void
+    {
+        redirect()->route('orderDetail',['id'=>$rowId]);
+    }
 
     public function actions(Order $row): array
     {
         return [
-            Button::add('edit')
-                ->slot('Edit: '.$row->id)
+            Button::add('detail')
+                ->slot('Detail')
                 ->id()
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id])
+                ->class('btn btn-sm text-secondary')
+                ->dispatch('detail', ['rowId' => $row->id]),
+            Button::add('edit')
+                ->slot('Edit')
+                ->id()
+                ->class('btn btn-sm text-primary')
+                ->dispatch('edit', ['rowId' => $row->id]),
+            Button::add('edit')
+                ->slot('Delete')
+                ->id()
+                ->class('btn btn-sm text-accent')
+                ->dispatch('edit', ['rowId' => $row->id]),
         ];
     }
-
+    public function actionsFromView($row): View
+    {
+        return view('actions-view', ['row' => $row]);
+    }
+    #[On('updateStatus')]
+    public function updateStatus($rowId,$status):void{
+           try{
+               $order = Order::find($rowId);
+               $order->status = $status;
+               $order->save();
+               $this->success('Order Status Updated');
+           }catch(\Exception $e){
+            (new ErrorLogHelper)('Updating Order Status',$e->getMessage());
+            $this->error('Please check your error log');
+           }
+    }
     /*
     public function actionRules($row): array
     {

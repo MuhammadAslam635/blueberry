@@ -2,13 +2,13 @@
 
 namespace App\Policies;
 
-use App\Models\Curreny;
+use App\Models\Currency;
 
-class CurrenyPolicy
+class CurrencyPolicy
 {
     public function code()
     {
-        $defaultCurrency = Curreny::first();
+        $defaultCurrency = Currency::first();
         $currencyCode = session()->get('currency', $defaultCurrency->symbol);
 
         return $currencyCode;

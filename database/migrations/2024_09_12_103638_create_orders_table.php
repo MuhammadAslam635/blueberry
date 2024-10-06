@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->enum('status', ["pending","process","dispatch","delivered","cancel"]);
             $table->date('cancel_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

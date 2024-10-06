@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('currenies', function (Blueprint $table) {
+        Schema::create('currencies', function (Blueprint $table) {
             $table->id();
             $table->string('symbol')->default('pkr');
             $table->string('currency')->default('pkr');
             $table->enum('status', [true, false])->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

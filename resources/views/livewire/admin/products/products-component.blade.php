@@ -9,7 +9,9 @@
         @endcan
     </x-mary-header>
 
-    @livewire('table.product-table')
+    <div>
+        @livewire('table.product-table')
+    </div>
 
 
 

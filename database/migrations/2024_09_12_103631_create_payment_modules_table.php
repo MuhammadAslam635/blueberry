@@ -20,8 +20,9 @@ return new class extends Migration
             $table->enum('mode', ["test","live"]);
             $table->string('module_key')->nullable();
             $table->string('module_secret')->nullable();
-            $table->string('merchent_id')->nullable();
+            $table->string('merchant_id')->nullable();
             $table->string('module_password')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

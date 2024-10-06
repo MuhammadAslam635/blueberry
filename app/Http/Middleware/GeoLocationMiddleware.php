@@ -45,7 +45,7 @@ class GeoLocationMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $ip = $request->ip();
-        session()->put('currency', 'Pkr');
+        session()->put('currency', 'Rs');
         // For local testing, use a public IP
 
         if ($ip == '127.0.0.1' || $ip == '::1') {

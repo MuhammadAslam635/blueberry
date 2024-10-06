@@ -2,7 +2,7 @@
 
 namespace App\View\Components\header;
 
-use App\Models\Curreny;
+use App\Models\Currency;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -16,7 +16,7 @@ class TopHeader extends Component
 
     public function render(): View|Closure|string
     {
-        $currencies = Curreny::where('status', 1)->get();
+        $currencies = Currency::where('status', 1)->get();
 
         return view('components.header.top-header', get_defined_vars());
     }

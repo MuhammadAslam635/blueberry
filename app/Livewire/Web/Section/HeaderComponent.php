@@ -3,7 +3,7 @@
 namespace App\Livewire\Web\Section;
 
 use App\Models\Category;
-use App\Models\Curreny;
+use App\Models\Currency;
 use App\Models\StoreLocation;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +20,7 @@ class HeaderComponent extends Component
 
     public function changeCurrency($code)
     {
-        $defaultCurrency = Curreny::first();
+        $defaultCurrency = Currency::first();
 
         // If no currency code is provided, set the default currency symbol
         if ($code === null) {
@@ -31,7 +31,7 @@ class HeaderComponent extends Component
         session()->put('currency', $code);
 
         // Update the currency rate
-        Curreny::where('symbol', $code)->first()->symbol;
+        Currency::where('symbol', $code)->first()->symbol;
     }
 
     public function render()

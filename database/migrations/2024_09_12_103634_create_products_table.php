@@ -31,6 +31,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('status', ["active","inactive"]);
             $table->json('gallery')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

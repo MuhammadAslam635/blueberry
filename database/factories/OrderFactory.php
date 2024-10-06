@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderFactory extends Factory
@@ -14,21 +15,18 @@ class OrderFactory extends Factory
      */
     protected $model = Order::class;
 
-    /**
-     * Define the model's default state.
-     */
-    public function definition(): array
+    public function definition()
     {
         return [
-            'user_id' => $this->faker->numberBetween(2, 50),
-            'total' => $this->faker->randomFloat(0, 0, 9999999999.),
-            'subtotal' => $this->faker->randomFloat(0, 0, 9999999999.),
-            'tax' => $this->faker->randomFloat(0, 0, 9999999999.),
-            'discount' => $this->faker->randomFloat(0, 0, 9999999999.),
-            'address' => $this->faker->text(),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'total' => $this->faker->randomFloat(2, 1, 1000),
+            'subtotal' => $this->faker->randomFloat(2, 1, 1000),
+            'tax' => $this->faker->randomFloat(2, 1, 100),
+            'discount' => $this->faker->randomFloat(2, 1, 100),
+            'address' => $this->faker->address(),
             'city' => $this->faker->city(),
-            'state' => $this->faker->word(),
-            'status' => $this->faker->randomElement(['pending', 'process', 'dispatch', 'delivered', 'cancel']),
+            'state' => $this->faker->state(),
+            'status' => $this->faker->randomElement(["pending","process","dispatch","delivered","cancel"]),
             'cancel_date' => $this->faker->date(),
         ];
     }

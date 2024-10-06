@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('heading1')->nulable();
             $table->string('heading2')->nullable();
             $table->string('heading3')->nullable();
-            $table->enum('status', [true, false])->default(false);
+            $table->enum('status', ['active','inactive'])->default('active');
             $table->string('image')->nullable();
             $table->string('link')->nullable();
             $table->timestamps();

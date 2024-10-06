@@ -20,7 +20,7 @@ class PaymentModule extends Model
         'mode',
         'module_key',
         'module_secret',
-        'merchent_id',
+        'merchant_id',
         'module_password',
     ];
 

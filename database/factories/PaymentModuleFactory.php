@@ -26,7 +26,7 @@ class PaymentModuleFactory extends Factory
             'mode' => $this->faker->randomElement(["test","live"]),
             'module_key' => $this->faker->word(),
             'module_secret' => $this->faker->word(),
-            'merchent_id' => $this->faker->word(),
+            'merchant_id' => $this->faker->word(),
             'module_password' => $this->faker->word(),
         ];
     }

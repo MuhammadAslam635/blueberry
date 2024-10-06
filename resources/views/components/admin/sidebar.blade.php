@@ -60,7 +60,7 @@
             </x-mary-menu-sub>
             <x-mary-menu-sub title="Order Management" icon="o-building-storefront">
                 @can('viewAny',App\Models\Order::class)
-                <x-mary-menu-item title="Users" icon="o-shopping-cart" link="{{ route('admin_orders') }}"
+                <x-mary-menu-item title="Orders" icon="o-shopping-cart" link="{{ route('admin_orders') }}"
                             class="{{ request()->is('management/orders') ? 'bg-primary' : '' }}" />
                 @endcan
             </x-mary-menu>

@@ -9,6 +9,7 @@ use App\Livewire\Admin\Category\CreateCategoryComponent;
 use App\Livewire\Admin\Category\EditCategoryComponent;
 use App\Livewire\Admin\Category\Sub\EditSubCategoryComponent;
 use App\Livewire\Admin\Category\Sub\SubCategoryComponent;
+use App\Livewire\Admin\Orders\OrderDetailComponent;
 use App\Livewire\Admin\Orders\OrdersComponent;
 use App\Livewire\Admin\Products\CreateProductComponent;
 use App\Livewire\Admin\Products\DetailProductComponent ;
@@ -28,7 +29,7 @@ Route::group(['middleware' => GeoLocationMiddleware::class], function () {
     Route::get('/', HomeComponent::class)->name('home');
     Route::get('/categories', CategoryComponent::class)->name('catgeories_page');
     Route::get('/category/{slug?}/{subcatgeory?}', CategoryProductComponent::class)->name('category_products');
-})->middleware('code,App\Models\Curreny');
+})->middleware('code,App\Models\Currency');
 
 Route::middleware([
     'auth:sanctum',
@@ -69,6 +70,7 @@ Route::middleware([
         });
         Route::prefix('orders')->group(function(){
              Route::get('/',OrdersComponent::class)->name('admin_orders')->middleware('can:viewAny,App\Models\Order');
+             Route::get('/{id}/detail',OrderDetailComponent::class)->name('orderDetail')->middleware('can:view,App\Models\Order');
         });
     });
 });

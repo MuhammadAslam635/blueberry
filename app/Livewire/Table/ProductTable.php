@@ -210,7 +210,9 @@ final class ProductTable extends PowerGridComponent
     #[\Livewire\Attributes\On('detProduct')]
     public function detProduct($rowId): void
     {
-        redirect()->route('detailProduct',['id'=>$rowId]);
+
+        redirect()->route('product-detail',['id'=>$rowId]);
+
     }
     #[\Livewire\Attributes\On('editProduct')]
     public function editProduct($rowId): void

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('product_dimensions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained();
-            $table->enum('width', ["sm","md","lg","xl","xxl"]);
+            $table->enum('width', ["xs","sm","md","lg","xl","xxl"]);
             $table->timestamps();
         });
 

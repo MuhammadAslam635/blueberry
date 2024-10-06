@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained();
             $table->enum('status', ["pending","paid","fail"]);
             $table->enum('payment_mode', ["cod","card","online","whatsapp"]);
+            $table->softDeletes();
             $table->timestamps();
         });
 

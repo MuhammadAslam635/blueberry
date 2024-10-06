@@ -14,15 +14,16 @@ class TransactionFactory extends Factory
      *
      * @var string
      */
-    protected $model = Transaction::class;
 
     /**
      * Define the model's default state.
      */
-    public function definition(): array
+    protected $model = Transaction::class;
+
+    public function definition()
     {
         return [
-            'order_id' => Order::factory(),
+            'order_id' => Order::inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(["pending","paid","fail"]),
             'payment_mode' => $this->faker->randomElement(["cod","card","online","whatsapp"]),
         ];
